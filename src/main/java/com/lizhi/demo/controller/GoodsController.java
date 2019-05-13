@@ -1,10 +1,14 @@
 package com.lizhi.demo.controller;
 
+import com.lizhi.demo.annotation.Classification;
+import com.lizhi.demo.annotation.MethodClassification;
 import com.lizhi.demo.domain.Goods;
+import com.lizhi.demo.dto.CustomUserDetails;
 import com.lizhi.demo.service.GoodsService;
 import com.lizhi.demo.utils.Result;
 import com.lizhi.demo.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
 /**
  * @author lenovo
  */
+@Classification
 @RestController
 @RequestMapping("goods")
 public class GoodsController {
@@ -24,6 +29,7 @@ public class GoodsController {
      * @return
      */
     @GetMapping("queryGoods")
+    @MethodClassification(BUSTYPE = MethodClassification.TYPE.DX)
     public Result queryGoods(){
         List<Goods> goodsList = goodsService.queryGoods();
         return ResultUtil.success(goodsList);
