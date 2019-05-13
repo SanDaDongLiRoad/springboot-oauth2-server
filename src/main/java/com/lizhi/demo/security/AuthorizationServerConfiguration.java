@@ -33,9 +33,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private DataSource dataSource;
 
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
-
     /**
      * 保存令牌数据栈
      */
@@ -82,17 +79,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         tokenServices.setAccessTokenValiditySeconds( (int) TimeUnit.DAYS.toSeconds(1));
 //        tokenServices.setAccessTokenValiditySeconds(30);
         endpoints.tokenServices(tokenServices);
-    }
-
-    /**
-     * 声明TokenStore实现
-     * @return
-     */
-    @Bean
-    public TokenStore tokenStore() {
-//        return new JdbcTokenStore(dataSource);
-        //使用redis存储令牌
-        return new RedisTokenStore(redisConnectionFactory);
     }
 
     /**
