@@ -14,8 +14,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers( "/goods/saveGoods").access("#oauth2.hasScope('write')");
-//            .anyRequest().authenticated();
+        http.authorizeRequests()
+                .antMatchers( "/goods/saveGoods").access("#oauth2.hasScope('write')")
+                .anyRequest().authenticated();
     }
 
 }
