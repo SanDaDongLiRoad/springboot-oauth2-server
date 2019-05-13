@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
@@ -32,11 +34,23 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private DataSource dataSource;
 
     @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
+    /**
+     * 保存令牌数据栈
+     */
+    @Autowired
     private TokenStore tokenStore;
 
+    /**
+     * 认证管理者
+     */
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * 用户信息服务
+     */
     @Autowired
     private UserService userService;
 
@@ -76,7 +90,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
      */
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
+//        return new JdbcTokenStore(dataSource);
+        //使用redis存储令牌
+        return new RedisTokenStore(redisConnectionFactory);
     }
 
     /**
