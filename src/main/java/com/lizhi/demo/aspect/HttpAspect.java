@@ -72,11 +72,9 @@ public class HttpAspect {
             logger.info("des is:" + tMethodClassification.DES() + "  type is:" + tMethodClassification.BUSTYPE());
         }
         CustomUserDetails customUserDetails = (CustomUserDetails) tokenStore.readAuthentication(token.split(" ")[1]).getPrincipal();
-        User user = userService.queryUserByName(customUserDetails.getUsername());
-        List<UserRole> userRoleList = userRoleService.queryListByUserid(user.getId());
+        List<UserRole> userRoleList = userRoleService.queryListByUsername(customUserDetails.getUsername());
         for(UserRole userRole : userRoleList){
-            Role role = roleService.queryById(userRole.getRoleid());
-            if(Objects.equals(String.valueOf(tMethodClassification.BUSTYPE()),role.getName())){
+            if(Objects.equals(String.valueOf(tMethodClassification.BUSTYPE()),userRole.getRolename())){
                 return joinPoint.proceed();
             }
         }

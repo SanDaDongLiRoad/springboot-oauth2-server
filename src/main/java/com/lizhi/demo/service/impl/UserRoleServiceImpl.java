@@ -20,8 +20,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRoleReposiyory userRoleReposiyory;
 
     @Override
-    public List<UserRole> queryListByUserid(Long userid) {
-        List<UserRole> userRoleList = userRoleReposiyory.findByUserid(userid);
+    public List<UserRole> queryListByUsername(String username) {
+        List<UserRole> userRoleList = userRoleReposiyory.findByUsername(username);
         if(Objects.equals(null,userRoleList)){
             return new ArrayList<UserRole>();
         }

@@ -11,8 +11,8 @@ public interface UserRoleService {
 
     /**
      * 通过用户ID查询用户角色列表
-     * @param userid
+     * @param username
      * @return
      */
-    List<UserRole> queryListByUserid(Long userid);
+    List<UserRole> queryListByUsername(String username);
 }

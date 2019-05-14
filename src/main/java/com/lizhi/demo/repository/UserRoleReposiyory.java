@@ -11,9 +11,9 @@ import java.util.List;
 public interface UserRoleReposiyory  extends JpaRepository<UserRole,Long> {
 
     /**
-     * 通过用户ID查询用户角色列表
-     * @param userid
+     * 通过用户名查询用户角色列表
+     * @param username
      * @return
      */
-    List<UserRole> findByUserid(Long userid);
+    List<UserRole> findByUsername(String username);
 }
