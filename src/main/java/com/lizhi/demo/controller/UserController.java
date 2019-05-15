@@ -52,7 +52,6 @@ public class UserController {
     @PostMapping("saveAuthInfo")
     @MethodClassification(BUSTYPE = MethodClassification.TYPE.DX)
     public Result<String> saveAuthInfo(@RequestBody AuthUserInfoVO authUserInfoVO){
-        authUserInfoVO.setUsername("shawn");
         Result rs = userService.saveAuthInfo(authUserInfoVO);
         return rs;
     }

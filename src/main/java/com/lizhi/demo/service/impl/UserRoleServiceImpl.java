@@ -27,4 +27,9 @@ public class UserRoleServiceImpl implements UserRoleService {
         }
         return userRoleList;
     }
+
+    @Override
+    public UserRole saveUserRole(UserRole userRole) {
+        return userRoleReposiyory.save(userRole);
+    }
 }

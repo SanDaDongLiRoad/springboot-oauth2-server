@@ -4,6 +4,7 @@ package com.lizhi.demo.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author lenovo
@@ -33,4 +34,9 @@ public class AuthUserInfoVO implements Serializable{
      * (可信客户端需要)客户端密钥
      */
     private String clientSecret;
+
+    /**
+     * 角色列表
+     */
+    private List<RoleVo> roleVoList;
 }

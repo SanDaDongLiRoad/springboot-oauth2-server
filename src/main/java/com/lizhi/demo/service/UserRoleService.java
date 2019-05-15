@@ -15,4 +15,11 @@ public interface UserRoleService {
      * @return
      */
     List<UserRole> queryListByUsername(String username);
+
+    /**
+     * 保存用户角色信息
+     * @param userRole
+     * @return
+     */
+    UserRole saveUserRole(UserRole userRole);
 }

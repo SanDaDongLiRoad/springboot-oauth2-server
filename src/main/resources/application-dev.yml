@@ -10,3 +10,5 @@ spring:
     show-sql: true
   redis:
     url: redis://localhost:6379
+    hostName : 127.0.0.1
+    port: 6379

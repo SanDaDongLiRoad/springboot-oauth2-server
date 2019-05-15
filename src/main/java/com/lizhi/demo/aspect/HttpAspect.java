@@ -16,6 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by xulizhi
@@ -44,10 +46,7 @@ public class HttpAspect {
     private UserRoleService userRoleService;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserService userService;
+    private RedisTemplate redisTemplate;
 
     @Pointcut("execution(public * com.lizhi.demo.controller.*.*(..))")
     public void log() {
@@ -72,10 +71,20 @@ public class HttpAspect {
             logger.info("des is:" + tMethodClassification.DES() + "  type is:" + tMethodClassification.BUSTYPE());
         }
         CustomUserDetails customUserDetails = (CustomUserDetails) tokenStore.readAuthentication(token.split(" ")[1]).getPrincipal();
-        List<UserRole> userRoleList = userRoleService.queryListByUsername(customUserDetails.getUsername());
-        for(UserRole userRole : userRoleList){
-            if(Objects.equals(String.valueOf(tMethodClassification.BUSTYPE()),userRole.getRolename())){
-                return joinPoint.proceed();
+        Set<String> userRoleSet = redisTemplate.opsForSet().members("USER_ROLE_RELATION"+customUserDetails.getUsername());
+        if(Objects.equals(null,userRoleSet) || Objects.equals(userRoleSet.size(),0)){
+            List<UserRole> userRoleList = userRoleService.queryListByUsername(customUserDetails.getUsername());
+
+            for(UserRole userRole : userRoleList){
+                if(Objects.equals(String.valueOf(tMethodClassification.BUSTYPE()),userRole.getRolename())){
+                    return joinPoint.proceed();
+                }
+            }
+        }else{
+            for(String roleName : userRoleSet){
+                if(Objects.equals(String.valueOf(tMethodClassification.BUSTYPE()),roleName)){
+                    return joinPoint.proceed();
+                }
             }
         }
         return ResultUtil.error(-1,"无权限");
