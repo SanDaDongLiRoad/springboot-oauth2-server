@@ -1,7 +1,11 @@
 package com.lizhi.demo.service;
 
 import com.lizhi.demo.domain.User;
+import com.lizhi.demo.utils.Result;
+import com.lizhi.demo.vo.AuthUserInfoVO;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 /**
  * @author lenovo
@@ -34,4 +38,24 @@ public interface UserService extends UserDetailsService {
      * @return
      */
     User queryUserByName(String username);
+
+    /**
+     * 通过用户名查询可信用户信息
+     * @param username
+     * @return
+     */
+    AuthUserInfoVO queryAuthInfoByUsername(String username);
+
+    /**
+     * 通过用户名查询可信用户信息
+     * @return
+     */
+    List<AuthUserInfoVO> queryAuthInfoList();
+
+    /**
+     * 保存可信用户信息
+     * @param authUserInfoVO
+     * @return
+     */
+    Result<String> saveAuthInfo(AuthUserInfoVO authUserInfoVO);
 }
